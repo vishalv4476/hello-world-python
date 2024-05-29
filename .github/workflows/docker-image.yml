@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
 
@@ -13,20 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:${{ github.run_number }}
-
- 
-    - uses: docker/login-action@v3
-    - name: Login to Docker Hub
-      with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-  
-    
-    - name: Tag the Docker image
-      run: docker tag my-image-name:${{ github.run_number }} vishalv4476/python-hello-world:latest
-
-    - name: Push the Docker image to Docker Hub
-      run: docker push vishalv4476/python-hello-world:latest
+      run: docker build . --file Dockerfile --tag vishalv4476/python-web-app:$(date +%s)
+      
+    - name: Docker Push
+      run: docker push vishalv4476/python-web-app
