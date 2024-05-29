@@ -21,4 +21,4 @@ jobs:
         run: docker build . --file Dockerfile --tag vishalv4476/python-hello-world:${{ github.run_number }}
 
       - name: Docker Push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/python-hello-world:${{ github.run_number }}
+        run: docker push vishalv4476/python-hello-world:${{ github.run_number }}
