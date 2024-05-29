@@ -15,10 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag my-image-name:${{ github.run_number }}
     
-    - name: Tag the Docker image
-      run: docker tag my-image-name:$(date +%s) vishalv4476/python-hello-world:latest
 
     - name: Push the Docker image to Docker Hub
-      run: docker push vishalv4476/python-hello-world:latest
+      run: docker push vishalv4476/python-hello-world:${{ github.run_number }}
